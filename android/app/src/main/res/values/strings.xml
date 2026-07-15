@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_alarm">Alarm</string>
+    <string name="ring_title">Good morning</string>
+    <string name="ring_text">It is your wake-up time.</string>
+    <string name="ring_test">This is how Lucid rings on your phone.</string>
+    <string name="dismiss">Wake up</string>
+    <string name="snooze">Snooze 5 min</string>
+</resources>

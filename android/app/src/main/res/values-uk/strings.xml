@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_alarm">Будильник</string>
+    <string name="ring_title">Доброго ранку</string>
+    <string name="ring_text">Час вставати.</string>
+    <string name="ring_test">Ось так Lucid дзвонить на телефоні.</string>
+    <string name="dismiss">Прокинутися</string>
+    <string name="snooze">Ще 5 хв</string>
+</resources>
