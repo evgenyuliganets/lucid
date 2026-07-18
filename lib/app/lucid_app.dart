@@ -1,6 +1,7 @@
-import 'package:lucid/design_system/app_theme.dart';
-import 'package:lucid/features/catalog/presentation/catalog_page.dart';
 import 'package:flutter/material.dart';
+import 'package:lucid/design_system/app_theme.dart';
+import 'package:lucid/features/home/presentation/home_page.dart';
+import 'package:lucid/l10n/l10n.dart';
 
 class LucidApp extends StatelessWidget {
   const LucidApp({super.key});
@@ -8,11 +9,13 @@ class LucidApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lucid',
+      onGenerateTitle: (context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(Brightness.light),
       darkTheme: buildAppTheme(Brightness.dark),
-      home: const CatalogPage(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const HomePage(),
     );
   }
 }

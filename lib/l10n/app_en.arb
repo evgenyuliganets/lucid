@@ -1,0 +1,212 @@
+{
+  "@@locale": "en",
+  "appTitle": "Lucid",
+  "retry": "Try again",
+  "loadFailed": "Lucid could not read its state.",
+  "setupTooltip": "Setup",
+  "sleepTooltip": "Sleep",
+  "alarmWakeBetween": "Wake between {start} and {end}",
+  "@alarmWakeBetween": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "alarmLatest": "at the latest",
+  "alarmOff": "Alarm is off",
+  "alarmNextToday": "Today",
+  "alarmNextTomorrow": "Tomorrow",
+  "alarmOnce": "Once",
+  "alarmEveryDay": "Every day",
+  "alarmEdit": "Change",
+  "alarmEnabledLabel": "Alarm on",
+  "alarmHowItWorks": "Your watch listens to your sleep during the window and gently vibrates at a restless, light moment. If no such moment comes, it wakes you at the latest time — and so does your phone.",
+  "alarmPhoneOnly": "Without the watch, your phone rings at the latest time.",
+  "editTitle": "Alarm",
+  "editLatestTime": "Latest wake-up time",
+  "editWindow": "Smart window",
+  "editWindowHint": "Lucid may wake you this much earlier, at a light-sleep moment.",
+  "editWindowMinutes": "{minutes} min",
+  "@editWindowMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "editRepeat": "Repeat",
+  "editRepeatHint": "No days selected: rings once.",
+  "editSave": "Save",
+  "setupBannerTitle": "Finish setup",
+  "setupBannerLeft": "{count, plural, =1{1 step left} other{{count} steps left}}",
+  "@setupBannerLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "setupTitle": "Setup",
+  "setupIntro": "Lucid needs a few permissions on your phone and its small app on your Galaxy Watch. Go through the steps once.",
+  "setupPhoneSection": "On this phone",
+  "setupWatchSection": "On your watch",
+  "setupOptionalSection": "Recommended",
+  "setupDone": "Done",
+  "setupAllDone": "All set. Lucid is ready for tonight.",
+  "stepNotificationsTitle": "Alarm notifications",
+  "stepNotificationsBody": "The alarm appears as a notification. Without it the phone cannot ring.",
+  "stepNotificationsAction": "Allow",
+  "stepExactTitle": "Alarms & reminders",
+  "stepExactBody": "Lets Lucid ring exactly on time, even when the phone is idle.",
+  "stepFullScreenTitle": "Alarm over the lock screen",
+  "stepFullScreenBody": "Lets the alarm screen open when the phone is locked.",
+  "stepBatteryTitle": "Run at night",
+  "stepBatteryBody": "Stops Android from pausing Lucid at night, so it hears your watch.",
+  "stepOpenSettings": "Open settings",
+  "stepAllow": "Allow",
+  "stepWatchPairTitle": "Pair a Galaxy Watch",
+  "stepWatchPairBody": "Lucid finds your light sleep with a Galaxy Watch (Watch4 or newer). Pair it with this phone in the Galaxy Wearable app and keep Bluetooth on.",
+  "stepWatchPairAction": "Open Galaxy Wearable",
+  "stepWatchInstallTitle": "Install Lucid on the watch",
+  "stepWatchInstallBody": "Lucid is not in the watch's app store yet, so it is installed from a computer once. This takes about five minutes.",
+  "stepWatchInstallShow": "Show how",
+  "stepWatchFinishTitle": "Finish on the watch",
+  "stepWatchFinishBody": "Open Lucid on your watch and tap “Allow notifications” and “Allow alarm screen”. Heart rate is optional.",
+  "stepWatchFinishWaiting": "Waiting for the watch… Open Lucid on the watch once.",
+  "stepSamsungTitle": "Samsung Health sleep stages",
+  "stepSamsungBody": "In the morning Lucid shows your sleep stages from Samsung Health and checks whether it woke you in light sleep.",
+  "stepSamsungConnect": "Connect",
+  "stepSamsungShow": "Show how",
+  "installTitle": "Install Lucid on your watch",
+  "installIntro": "You need a computer with Android platform tools (adb), the file lucid-watch.apk, and the watch on the same Wi-Fi as the computer.",
+  "installStep1Title": "Turn on developer mode on the watch",
+  "installStep1Body": "On the watch open Settings → About watch → Software information and tap “Software version” 5 times, until you see “Developer mode turned on”.",
+  "installStep2Title": "Turn on wireless debugging",
+  "installStep2Body": "Open Settings → Developer options. Turn on “ADB debugging” and “Wireless debugging”, then tap “Wireless debugging” → “Pair new device”. The watch shows an IP address, a port and a pairing code.",
+  "installStep3Title": "Pair and connect from the computer",
+  "installStep3Body": "Type the pairing address and code from the watch, then connect to the address shown under “Wireless debugging” (its port differs from the pairing port):",
+  "installStep4Title": "Install the watch app",
+  "installStep4Body": "In the folder with lucid-watch.apk run:",
+  "installStep5Title": "Open Lucid on the watch",
+  "installStep5Body": "Find Lucid in the watch's app list, open it and allow notifications and the alarm screen. You can turn developer mode off afterwards.",
+  "installCopied": "Copied",
+  "installCopyTooltip": "Copy command",
+  "samsungGuideTitle": "Connect Samsung Health",
+  "samsungGuideIntro": "Samsung lets apps read sleep stages only after a one-time switch in Samsung Health. Lucid only reads; it never changes your data.",
+  "samsungGuideStep1": "Open Samsung Health → ☰ menu (or your profile) → Settings → About Samsung Health.",
+  "samsungGuideStep2": "Tap the version line 10 times. A new menu “Developer mode” appears.",
+  "samsungGuideStep3": "Open “Developer mode” and turn on “Developer Mode for Data Read”.",
+  "samsungGuideStep4": "Come back to Lucid and tap “Connect”, then allow Sleep.",
+  "samsungStatusReady": "Connected",
+  "samsungStatusPermission": "Tap Connect and allow Sleep.",
+  "samsungStatusDeveloperMode": "Turn on Samsung Health's developer mode for data read first.",
+  "samsungStatusNotInstalled": "Samsung Health is not installed.",
+  "samsungStatusUpdate": "Update Samsung Health in the Galaxy Store or Play Store.",
+  "samsungStatusDisabled": "Samsung Health is turned off on this phone.",
+  "samsungStatusNotInitialized": "Open Samsung Health once and finish its setup.",
+  "samsungStatusUnavailable": "Samsung Health is not reachable right now.",
+  "watchCardTitle": "Watch",
+  "watchNotPaired": "No watch connected",
+  "watchNoApp": "Lucid is not installed on the watch",
+  "watchNotConnected": "{name} is not connected right now",
+  "@watchNotConnected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "watchUnknownName": "Your watch",
+  "watchNeedsSetup": "Open Lucid on the watch to finish setup",
+  "watchTracking": "{name} is listening to your sleep",
+  "@watchTracking": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "watchArmed": "{name} is ready for {time}",
+  "@watchArmed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "watchConnected": "{name} is connected",
+  "@watchConnected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "watchHeartRateOn": "Heart rate on",
+  "watchTestPhone": "Test phone alarm",
+  "sleepTitle": "Sleep",
+  "sleepEmpty": "No nights yet. After your first night with the watch, it appears here.",
+  "sleepLastNight": "Last night",
+  "sleepSeeAll": "All nights",
+  "sleepScore": "Score {score}",
+  "@sleepScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepDuration": "{hours} h {minutes} min",
+  "@sleepDuration": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "stageAwake": "Awake",
+  "stageRem": "REM",
+  "stageLight": "Light",
+  "stageDeep": "Deep",
+  "wokeAtLight": "Lucid woke you at {time} — in light sleep",
+  "@wokeAtLight": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "wokeAtDeadline": "No light moment came; Lucid woke you at {time}",
+  "@wokeAtDeadline": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "wokeAtSnoozed": "Dismissed at {time}",
+  "@wokeAtSnoozed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkLight": "Samsung agrees: light sleep at that moment.",
+  "checkRem": "Samsung agrees: REM sleep at that moment.",
+  "checkDeep": "Samsung saw deep sleep at that moment.",
+  "checkAwake": "You were already awake by Samsung's stages.",
+  "checkPending": "Samsung's stages usually appear an hour or more after you wake.",
+  "samsungNotConnected": "Connect Samsung Health in Setup to see your sleep stages.",
+  "samsungReadFailed": "Samsung Health could not be read."
+}

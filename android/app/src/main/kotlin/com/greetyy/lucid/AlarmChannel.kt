@@ -15,7 +15,6 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.greetyy.lucid.shared.AlarmSettings
-import com.greetyy.lucid.shared.NightReport
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -25,8 +24,8 @@ import java.time.DayOfWeek
 import java.time.ZonedDateTime
 
 /**
- * `lucid/alarm`: the alarm, the phone's alarm permissions, the watch and the
- * watch's night reports. Dart validates everything this returns.
+ * `lucid/alarm`: the alarm, the phone's alarm permissions and the watch.
+ * Dart validates everything this returns.
  */
 class AlarmChannel(
     messenger: BinaryMessenger,
@@ -67,7 +66,6 @@ class AlarmChannel(
                 PhoneAlarm.ring(activity, windowEnd = 0)
                 result.success(null)
             }
-            "getNights" -> result.success(PhoneStore(activity).nights.map(::nightMap))
             else -> result.notImplemented()
         }
     }
@@ -188,16 +186,6 @@ class AlarmChannel(
         if (dayValues.any { it !in 1..7 }) return null
         return AlarmSettings(enabled, wakeBy, window, dayValues.map(DayOfWeek::of).toSet())
     }
-
-    private fun nightMap(report: NightReport): Map<String, Any?> = mapOf(
-        "windowStart" to report.windowStartMillis,
-        "windowEnd" to report.windowEndMillis,
-        "trackingStart" to report.trackingStartMillis,
-        "wokeAt" to report.wokeAtMillis,
-        "reason" to report.reason?.name,
-        "dismissedAt" to report.dismissedAtMillis,
-        "epochs" to report.epochs.map { listOf(it.endsAtMillis, it.movement, it.heartRate) },
-    )
 
     companion object {
         const val NAME = "lucid/alarm"
