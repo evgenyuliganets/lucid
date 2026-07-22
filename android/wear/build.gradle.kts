@@ -48,6 +48,8 @@ dependencies {
     implementation(project(":shared"))
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.activity:activity-compose:1.11.0")
+    // play-services-wearable pulls an old Fragment; ActivityResult APIs need 1.3+.
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
     implementation("androidx.wear.compose:compose-material3:1.5.0")
     implementation("androidx.wear.compose:compose-foundation:1.5.0")

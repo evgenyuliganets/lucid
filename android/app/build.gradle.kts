@@ -51,6 +51,9 @@ dependencies {
         "Copy samsung-health-data-api-1.1.0.aar into android/app/libs (README, Samsung Health)."
     }
     implementation(files(samsungHealthAar))
+    // Runtime dependencies of the Samsung SDK, which a local AAR does not bring along.
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("org.jetbrains.kotlin:kotlin-parcelize-runtime:2.3.20")
     implementation(project(":shared"))
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("com.google.android.gms:play-services-wearable:19.0.0")
