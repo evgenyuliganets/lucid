@@ -2,6 +2,7 @@ package com.greetyy.lucid.shared
 
 import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalTime
 import java.time.ZonedDateTime
 
 /**
@@ -24,14 +25,23 @@ data class AlarmSettings(
 
     val isOneTime: Boolean get() = days.isEmpty()
 
-    /** The next window whose end is still ahead of [now], or null when off. */
-    fun nextWindow(now: ZonedDateTime): WakeWindow? {
+    /**
+     * The next window whose end is after both [now] and [handledWindowEndMillis]
+     * (a window already dismissed on either device), or null when off.
+     */
+    fun nextWindow(now: ZonedDateTime, handledWindowEndMillis: Long = 0): WakeWindow? {
+        val handled = Instant.ofEpochMilli(handledWindowEndMillis).atZone(now.zone)
+        return nextWindowAfter(maxOf(now, handled))
+    }
+
+    private fun nextWindowAfter(now: ZonedDateTime): WakeWindow? {
         if (!enabled) return null
         val today = now.toLocalDate()
         for (offset in 0L..7L) {
             val date = today.plusDays(offset)
             if (days.isNotEmpty() && date.dayOfWeek !in days) continue
-            val end = date.atStartOfDay(now.zone).plusMinutes(wakeByMinute.toLong())
+            // Local wall-clock time, so a daylight-saving change does not shift it.
+            val end = date.atTime(LocalTime.MIN.plusMinutes(wakeByMinute.toLong())).atZone(now.zone)
             if (end.isAfter(now)) {
                 return WakeWindow(
                     start = end.minusMinutes(windowMinutes.toLong()).toInstant(),

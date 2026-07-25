@@ -54,6 +54,21 @@ class AlarmSettingsTest {
     }
 
     @Test
+    fun `daylight-saving days keep the local wake time`() {
+        val daily = weekdays.copy(days = emptySet())
+        val spring = daily.nextWindow(ZonedDateTime.of(2027, 3, 28, 1, 0, 0, 0, zone))
+        assertEquals(ZonedDateTime.of(2027, 3, 28, 7, 0, 0, 0, zone).toInstant(), spring?.end)
+        val autumn = daily.nextWindow(ZonedDateTime.of(2027, 10, 31, 1, 0, 0, 0, zone))
+        assertEquals(ZonedDateTime.of(2027, 10, 31, 7, 0, 0, 0, zone).toInstant(), autumn?.end)
+    }
+
+    @Test
+    fun `a handled window is skipped`() {
+        val handled = at(16, 7, 0).toInstant().toEpochMilli()
+        assertEquals(at(17, 7, 0).toInstant(), weekdays.nextWindow(at(16, 6, 50), handled)?.end)
+    }
+
+    @Test
     fun `encode and decode round trip`() {
         assertEquals(weekdays, AlarmSettings.decode(weekdays.encode()))
         assertEquals(AlarmSettings.DEFAULT, AlarmSettings.decode(AlarmSettings.DEFAULT.encode()))

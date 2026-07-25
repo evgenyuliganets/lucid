@@ -11,7 +11,9 @@ import com.greetyy.lucid.shared.WatchStatus
  * receiver and the watch listener can re-arm without starting Flutter.
  */
 class PhoneStore(context: Context) {
-    private val prefs = context.applicationContext.getSharedPreferences("lucid", Context.MODE_PRIVATE)
+    // Device-protected storage: the alarm must re-arm after a reboot before the first unlock.
+    private val prefs = context.applicationContext.createDeviceProtectedStorageContext()
+        .getSharedPreferences("lucid", Context.MODE_PRIVATE)
 
     var settings: AlarmSettings
         get() = prefs.getString(KEY_SETTINGS, null)?.let(AlarmSettings::decode) ?: AlarmSettings.DEFAULT

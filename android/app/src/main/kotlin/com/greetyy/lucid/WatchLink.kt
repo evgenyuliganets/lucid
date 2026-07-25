@@ -46,7 +46,8 @@ object WatchLink {
             dataMap.putString(Sync.KEY_VALUE, value)
             dataMap.putLong(Sync.KEY_SENT_AT, System.currentTimeMillis())
         }.asPutDataRequest().setUrgent()
-        Wearable.getDataClient(context).putDataItem(request)
+        // Best effort: Play services may be unavailable (e.g. right after a locked boot).
+        runCatching { Wearable.getDataClient(context).putDataItem(request) }
     }
 }
 

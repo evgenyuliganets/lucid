@@ -86,9 +86,7 @@ class AlarmChannel(
     private fun stateMap(info: WatchLink.WatchInfo): Map<String, Any?> {
         val store = PhoneStore(activity)
         val settings = store.settings
-        val now = ZonedDateTime.now()
-        val handled = java.time.Instant.ofEpochMilli(store.handledWindowEnd).atZone(now.zone)
-        val window = settings.nextWindow(maxOf(now, handled))
+        val window = settings.nextWindow(ZonedDateTime.now(), store.handledWindowEnd)
         val status = store.watchStatus
         return mapOf(
             "settings" to mapOf(
@@ -100,7 +98,10 @@ class AlarmChannel(
             "nextWindow" to window?.let { mapOf("start" to it.start.toEpochMilli(), "end" to it.end.toEpochMilli()) },
             "phone" to mapOf(
                 "notifications" to notificationsAllowed(),
-                "exactAlarms" to activity.getSystemService(AlarmManager::class.java).canScheduleExactAlarms(),
+                "exactAlarms" to (
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+                        activity.getSystemService(AlarmManager::class.java).canScheduleExactAlarms()
+                    ),
                 "fullScreen" to fullScreenAllowed(),
                 "batteryUnrestricted" to activity.getSystemService(PowerManager::class.java)
                     .isIgnoringBatteryOptimizations(activity.packageName),

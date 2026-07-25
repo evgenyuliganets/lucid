@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.content.Context
 import android.os.Bundle
 import android.provider.Settings
 import android.text.format.DateFormat
@@ -11,6 +12,7 @@ import android.text.format.DateUtils
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,6 +33,7 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import com.greetyy.lucid.shared.WakeWindow
 import java.time.Instant
+import java.util.Date
 
 /** Shows the synced alarm and asks for what the watch still needs. */
 class MainActivity : ComponentActivity() {
@@ -165,15 +169,15 @@ private fun WatchScreen(
 @Composable
 private fun AlarmSummary(state: WatchScreenState) {
     val window = state.window
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
     val title = if (window == null) {
         stringResource(R.string.no_alarm)
     } else {
         val format = DateFormat.getTimeFormat(context)
         stringResource(
             R.string.window_label,
-            format.format(java.util.Date.from(window.start)),
-            format.format(java.util.Date.from(window.end)),
+            format.format(Date.from(window.start)),
+            format.format(Date.from(window.end)),
         )
     }
     val detail = when {
@@ -181,7 +185,7 @@ private fun AlarmSummary(state: WatchScreenState) {
         state.tracking -> stringResource(R.string.tracking)
         else -> "${dayLabel(context, window.end)} · ${stringResource(R.string.armed_hint)}"
     }
-    androidx.compose.foundation.layout.Column(modifier = Modifier.padding(vertical = 4.dp)) {
+    Column(modifier = Modifier.padding(vertical = 4.dp)) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
@@ -197,7 +201,7 @@ private fun AlarmSummary(state: WatchScreenState) {
     }
 }
 
-private fun dayLabel(context: android.content.Context, end: Instant): String {
+private fun dayLabel(context: Context, end: Instant): String {
     val millis = end.toEpochMilli()
     return when {
         DateUtils.isToday(millis) -> context.getString(R.string.today)

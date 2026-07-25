@@ -4,8 +4,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import java.time.Instant
-import java.time.ZoneId
 import java.time.ZonedDateTime
 
 /**
@@ -22,13 +20,14 @@ object NightSchedule {
         alarmManager.cancel(NightReceiver.trackIntent(context, null))
         alarmManager.cancel(NightReceiver.deadlineIntent(context, null))
 
-        val now = ZonedDateTime.now()
-        val handled = Instant.ofEpochMilli(prefs.handledWindowEnd).atZone(ZoneId.systemDefault())
-        val window = prefs.settings?.nextWindow(maxOf(now, handled))
+        val window = prefs.settings?.nextWindow(ZonedDateTime.now(), prefs.handledWindowEnd)
         prefs.armedWindow = window
 
+        // A ringing alarm is finished only by the user (or the phone), never by re-arming.
         val tracking = NightService.trackingWindowEnd
-        if (tracking != null && tracking != window?.end?.toEpochMilli()) NightService.stop(context)
+        if (NightService.ringing.value == null && tracking != null && tracking != window?.end?.toEpochMilli()) {
+            NightService.stop(context)
+        }
 
         if (window != null) {
             val showApp = PendingIntent.getActivity(

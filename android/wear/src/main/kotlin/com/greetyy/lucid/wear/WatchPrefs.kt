@@ -9,7 +9,9 @@ import java.time.Instant
 
 /** The watch's persisted state: the synced alarm and where tonight stands. */
 class WatchPrefs(context: Context) {
-    private val prefs = context.applicationContext.getSharedPreferences("lucid", Context.MODE_PRIVATE)
+    // Device-protected storage: alarms must re-arm after a reboot before the first unlock.
+    private val prefs = context.applicationContext.createDeviceProtectedStorageContext()
+        .getSharedPreferences("lucid", Context.MODE_PRIVATE)
 
     var settings: AlarmSettings?
         get() = prefs.getString(KEY_SETTINGS, null)?.let(AlarmSettings::decode)

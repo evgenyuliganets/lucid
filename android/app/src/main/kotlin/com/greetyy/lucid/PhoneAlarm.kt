@@ -10,8 +10,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.RingtoneManager
-import java.time.Instant
-import java.time.ZoneId
 import java.time.ZonedDateTime
 
 /**
@@ -31,8 +29,9 @@ object PhoneAlarm {
         val store = PhoneStore(context)
         val alarmManager = context.getSystemService(AlarmManager::class.java)
         alarmManager.cancel(AlarmReceiver.ringIntent(context, 0))
-        val handled = Instant.ofEpochMilli(store.handledWindowEnd).atZone(ZoneId.systemDefault())
-        val window = store.settings.nextWindow(maxOf(ZonedDateTime.now(), handled)) ?: return
+        // A pending snooze belongs to the alarm being replaced or switched off.
+        alarmManager.cancel(AlarmReceiver.snoozeOverIntent(context, 0))
+        val window = store.settings.nextWindow(ZonedDateTime.now(), store.handledWindowEnd) ?: return
         val end = window.end.toEpochMilli()
         alarmManager.setAlarmClock(
             AlarmManager.AlarmClockInfo(end, openApp(context)),
@@ -80,6 +79,8 @@ object PhoneAlarm {
             .setFullScreenIntent(ringScreen, true)
             .setContentIntent(ringScreen)
             .setTimeoutAfter(RING_TIMEOUT_MILLIS)
+            // Swiped away or timed out counts as dismissed, so both devices stop and move on.
+            .setDeleteIntent(AlarmReceiver.dismissIntent(context))
             .addAction(Notification.Action.Builder(null, context.getString(R.string.dismiss), AlarmReceiver.dismissIntent(context)).build())
             .addAction(Notification.Action.Builder(null, context.getString(R.string.snooze), AlarmReceiver.snoozeIntent(context)).build())
             .build()
@@ -93,8 +94,9 @@ object PhoneAlarm {
         val windowEnd = store.ringingWindowEnd
         stopRinging(context)
         if (windowEnd > 0) {
-            finishWindow(context, windowEnd)
+            // Dismissal first: the watch must stop ringing before a one-time alarm is switched off.
             WatchLink.sendPhoneDismissed(context, windowEnd)
+            finishWindow(context, windowEnd)
         }
         LucidEvents.changed()
     }

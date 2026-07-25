@@ -51,7 +51,11 @@ class NightService : Service(), SensorEventListener {
     private var accumulator: EpochAccumulator? = null
     private val epochs = mutableListOf<Epoch>()
 
-    private val ringTimeout = Runnable { finishRing(dismissedAt = null, notifyPhone = true) }
+    // An unanswered early ring comes back as a snooze, so the user still wakes
+    // by the window end; an unanswered deadline ring ends (the phone rings too).
+    private val ringTimeout = Runnable {
+        if (ringState.value == WakeReason.DEADLINE) finishRing(dismissedAt = null, notifyPhone = true) else snooze()
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -89,6 +93,7 @@ class NightService : Service(), SensorEventListener {
     }
 
     private fun startTracking(start: Long, end: Long) {
+        if (ringState.value != null) return
         if (end <= System.currentTimeMillis() || end <= prefs.handledWindowEnd) return
         if (detector != null && windowEnd == end) return
         goForeground(trackingNotification())
@@ -149,6 +154,7 @@ class NightService : Service(), SensorEventListener {
         }
         detector = null
         accumulator = null
+        trackingWindowEnd = null
         ringState.value = reason
         holdWakeLock(RING_TIMEOUT_MILLIS + 60_000)
         goForeground(ringNotification(reason))
@@ -156,10 +162,8 @@ class NightService : Service(), SensorEventListener {
             VibrationEffect.createWaveform(VIBRATION_TIMINGS, VIBRATION_AMPLITUDES, VIBRATION_REPEAT_FROM),
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_ALARM),
         )
+        // The full-screen intent opens the ring screen; a direct start would be a blocked background start.
         handler.postDelayed(ringTimeout, RING_TIMEOUT_MILLIS)
-        startActivity(
-            Intent(this, RingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-        )
     }
 
     private fun armedStart(end: Long): Long =
@@ -201,7 +205,10 @@ class NightService : Service(), SensorEventListener {
         handler.removeCallbacks(ringTimeout)
         ringState.value = null
         if (reason != WakeReason.TEST) {
-            getSystemService(AlarmManager::class.java).setAlarmClock(
+            val alarmManager = getSystemService(AlarmManager::class.java)
+            // The snooze rings instead of a deadline that would cut it short.
+            alarmManager.cancel(NightReceiver.deadlineIntent(this, null))
+            alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(System.currentTimeMillis() + SNOOZE_MILLIS, null),
                 NightReceiver.snoozeOverIntent(this, windowEnd),
             )
@@ -370,6 +377,8 @@ class NightService : Service(), SensorEventListener {
                         .putExtra(EXTRA_WINDOW_END, windowEnd),
                 )
             } else {
+                // Snoozed (the service is gone) or never tracked: report what there is.
+                prefs.pendingReport?.takeIf { it.windowEndMillis == windowEnd }?.let { PhoneLink.sendNight(context, it) }
                 prefs.pendingReport = null
                 prefs.handledWindowEnd = windowEnd
                 NightSchedule.arm(context)
