@@ -41,9 +41,53 @@ Map<String, Object?> alarmStateReply({
   },
 };
 
-/// Answers both native channels with [alarmState] and an empty night list.
-/// Returns the calls received, for assertions.
-List<MethodCall> fakeChannels(Map<String, Object?> alarmState) {
+/// One Samsung night (23:00-07:05) and the watch night that woke at 06:35.
+final samsungNightReply = <Object?>[
+  {
+    'start': DateTime(2026, 11, 16, 23).millisecondsSinceEpoch,
+    'end': DateTime(2026, 11, 17, 7, 5).millisecondsSinceEpoch,
+    'score': 81,
+    'sessions': [
+      {
+        'start': DateTime(2026, 11, 16, 23).millisecondsSinceEpoch,
+        'end': DateTime(2026, 11, 17, 7, 5).millisecondsSinceEpoch,
+        'stages': [
+          {
+            'start': DateTime(2026, 11, 16, 23).millisecondsSinceEpoch,
+            'end': DateTime(2026, 11, 17, 3).millisecondsSinceEpoch,
+            'stage': 'deep',
+          },
+          {
+            'start': DateTime(2026, 11, 17, 3).millisecondsSinceEpoch,
+            'end': DateTime(2026, 11, 17, 7, 5).millisecondsSinceEpoch,
+            'stage': 'light',
+          },
+        ],
+      },
+    ],
+  },
+  // Not closed yet: skipped, must not hide the other night.
+  {'start': 1, 'end': null, 'score': null, 'sessions': <Object?>[]},
+];
+
+final watchNightReply = <Object?>[
+  {
+    'windowStart': DateTime(2026, 11, 17, 6, 30).millisecondsSinceEpoch,
+    'windowEnd': DateTime(2026, 11, 17, 7).millisecondsSinceEpoch,
+    'trackingStart': DateTime(2026, 11, 17, 6).millisecondsSinceEpoch,
+    'wokeAt': DateTime(2026, 11, 17, 6, 35).millisecondsSinceEpoch,
+    'reason': 'LIGHT_SLEEP',
+    'dismissedAt': DateTime(2026, 11, 17, 6, 36).millisecondsSinceEpoch,
+    'epochs': <Object?>[],
+  },
+];
+
+/// Answers both native channels with [alarmState] and, when [withNights],
+/// a connected Samsung Health with one night. Returns the calls received.
+List<MethodCall> fakeChannels(
+  Map<String, Object?> alarmState, {
+  bool withNights = false,
+}) {
   final calls = <MethodCall>[];
   final messenger =
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
@@ -61,8 +105,9 @@ List<MethodCall> fakeChannels(Map<String, Object?> alarmState) {
   ) async {
     calls.add(call);
     return switch (call.method) {
-      'status' => 'developerModeNeeded',
-      'watchNights' => <Object?>[],
+      'status' => withNights ? 'ready' : 'developerModeNeeded',
+      'watchNights' => withNights ? watchNightReply : <Object?>[],
+      'readSleep' => samsungNightReply,
       _ => null,
     };
   });

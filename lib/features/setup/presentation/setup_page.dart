@@ -70,7 +70,7 @@ class _SetupList extends ConsumerWidget {
             Text(l10n.setupIntro, style: Theme.of(context).textTheme.bodyLarge),
           _SectionTitle(l10n.setupPhoneSection),
           SetupStepCard(
-            number: 1,
+            number: SetupStep.notifications.index + 1,
             title: l10n.stepNotificationsTitle,
             body: l10n.stepNotificationsBody,
             done: done(SetupStep.notifications),
@@ -79,7 +79,7 @@ class _SetupList extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           SetupStepCard(
-            number: 2,
+            number: SetupStep.exactAlarms.index + 1,
             title: l10n.stepExactTitle,
             body: l10n.stepExactBody,
             done: done(SetupStep.exactAlarms),
@@ -88,7 +88,7 @@ class _SetupList extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           SetupStepCard(
-            number: 3,
+            number: SetupStep.fullScreen.index + 1,
             title: l10n.stepFullScreenTitle,
             body: l10n.stepFullScreenBody,
             done: done(SetupStep.fullScreen),
@@ -97,16 +97,22 @@ class _SetupList extends ConsumerWidget {
           ),
           _SectionTitle(l10n.setupWatchSection),
           SetupStepCard(
-            number: 4,
+            number: SetupStep.watchPaired.index + 1,
             title: l10n.stepWatchPairTitle,
             body: l10n.stepWatchPairBody,
             done: done(SetupStep.watchPaired),
             actionLabel: l10n.stepWatchPairAction,
-            onAction: controller.openWearApp,
+            onAction: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              final missing = l10n.wearAppMissing;
+              if (!await controller.openWearApp()) {
+                messenger.showSnackBar(SnackBar(content: Text(missing)));
+              }
+            },
           ),
           const SizedBox(height: AppSpacing.sm),
           SetupStepCard(
-            number: 5,
+            number: SetupStep.watchApp.index + 1,
             title: l10n.stepWatchInstallTitle,
             body: l10n.stepWatchInstallBody,
             done: done(SetupStep.watchApp),
@@ -117,7 +123,7 @@ class _SetupList extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           SetupStepCard(
-            number: 6,
+            number: SetupStep.watchFinish.index + 1,
             title: l10n.stepWatchFinishTitle,
             body: l10n.stepWatchFinishBody,
             done: done(SetupStep.watchFinish),
@@ -125,7 +131,7 @@ class _SetupList extends ConsumerWidget {
           ),
           _SectionTitle(l10n.setupOptionalSection),
           SetupStepCard(
-            number: 7,
+            number: SetupStep.battery.index + 1,
             title: l10n.stepBatteryTitle,
             body: l10n.stepBatteryBody,
             done: done(SetupStep.battery),
@@ -151,24 +157,23 @@ class _SamsungStep extends ConsumerWidget {
     final l10n = context.l10n;
     final connect = ref.read(sleepControllerProvider.notifier).connectSamsung;
     final status = this.status;
-    final permissionOnly = status == SamsungStatus.permissionNeeded;
+    // Only developer mode needs the guide; Samsung's own screens handle the rest.
+    final needsGuide = status == SamsungStatus.developerModeNeeded;
     return SetupStepCard(
-      number: 8,
+      number: SetupStep.samsung.index + 1,
       title: l10n.stepSamsungTitle,
       body: l10n.stepSamsungBody,
       done: done,
-      note: status == null ? null : samsungStatusText(l10n, status),
-      actionLabel: permissionOnly
-          ? l10n.stepSamsungConnect
-          : l10n.stepSamsungShow,
-      onAction: permissionOnly
-          ? connect
-          : () => showModalBottomSheet<void>(
+      note: status == null ? null : _samsungStatusText(l10n, status),
+      actionLabel: needsGuide ? l10n.stepSamsungShow : l10n.stepSamsungConnect,
+      onAction: needsGuide
+          ? () => showModalBottomSheet<void>(
               context: context,
               isScrollControlled: true,
               showDragHandle: true,
               builder: (_) => SamsungGuideSheet(onConnect: connect),
-            ),
+            )
+          : connect,
     );
   }
 }
@@ -193,7 +198,7 @@ class _SectionTitle extends StatelessWidget {
 }
 
 /// What the user should do about a Samsung Health [status].
-String samsungStatusText(AppLocalizations l10n, SamsungStatus status) =>
+String _samsungStatusText(AppLocalizations l10n, SamsungStatus status) =>
     switch (status) {
       SamsungStatus.ready => l10n.samsungStatusReady,
       SamsungStatus.permissionNeeded => l10n.samsungStatusPermission,

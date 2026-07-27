@@ -3,7 +3,7 @@ import 'package:lucid/features/alarm/data/alarm_channel.dart';
 import 'package:lucid/features/alarm/domain/alarm_overview.dart';
 import 'package:lucid/features/alarm/domain/alarm_settings.dart';
 
-/// The alarm and the phone/watch readiness, as [Result]s.
+/// The alarm, the phone's permission screens and the watch, as [Result]s.
 class AlarmRepository {
   const AlarmRepository(this._channel);
 
@@ -13,6 +13,24 @@ class AlarmRepository {
 
   Future<Result<AlarmOverview>> save(AlarmSettings settings) =>
       _guard(() => _channel.saveSettings(settings));
+
+  /// The new state when the system prompt answered; null when Settings opened.
+  Future<Result<AlarmOverview?>> requestNotifications() =>
+      _guard(_channel.requestNotifications);
+
+  Future<Result<void>> openExactAlarmSettings() =>
+      _guard(_channel.openExactAlarmSettings);
+
+  Future<Result<void>> openFullScreenSettings() =>
+      _guard(_channel.openFullScreenSettings);
+
+  Future<Result<void>> requestBatteryUnrestricted() =>
+      _guard(_channel.requestBatteryUnrestricted);
+
+  /// False when Galaxy Wearable is not installed.
+  Future<Result<bool>> openWearApp() => _guard(_channel.openWearApp);
+
+  Future<Result<void>> testAlarm() => _guard(_channel.testAlarm);
 
   Future<Result<T>> _guard<T>(Future<T> Function() action) async {
     try {

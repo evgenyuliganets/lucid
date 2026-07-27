@@ -56,29 +56,30 @@ void main() {
       Night(
         record: record,
         watch: watch(wokeAt: at(17, 6, 35)),
-      ).check(at(17, 9)),
+      ).check(at(17, 9), samsungReady: true),
       WakeCheck.light,
     );
     expect(
       Night(
         record: record,
         watch: watch(wokeAt: at(17, 6, 50)),
-      ).check(at(17, 9)),
+      ).check(at(17, 9), samsungReady: true),
       WakeCheck.rem,
     );
     expect(
       Night(
         record: record,
         watch: watch(wokeAt: at(17, 2)),
-      ).check(at(17, 9)),
+      ).check(at(17, 9), samsungReady: true),
       WakeCheck.deep,
     );
   });
 
   test('missing Samsung data is pending on the same morning only', () {
     final night = Night(record: null, watch: watch(wokeAt: at(17, 6, 35)));
-    expect(night.check(at(17, 8)), WakeCheck.pending);
-    expect(night.check(at(18, 8)), WakeCheck.none);
+    expect(night.check(at(17, 8), samsungReady: true), WakeCheck.pending);
+    expect(night.check(at(18, 8), samsungReady: true), WakeCheck.none);
+    expect(night.check(at(17, 8), samsungReady: false), WakeCheck.none);
   });
 
   test('stage totals and time asleep', () {

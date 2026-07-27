@@ -8,6 +8,7 @@ import 'package:lucid/features/alarm/presentation/wake_time_card.dart';
 import 'package:lucid/features/alarm/presentation/watch_card.dart';
 import 'package:lucid/features/setup/presentation/setup_banner.dart';
 import 'package:lucid/features/setup/presentation/setup_page.dart';
+import 'package:lucid/features/sleep/domain/samsung_status.dart';
 import 'package:lucid/features/sleep/presentation/night_card.dart';
 import 'package:lucid/features/sleep/presentation/sleep_controller.dart';
 import 'package:lucid/features/sleep/presentation/sleep_page.dart';
@@ -72,7 +73,13 @@ class _HomeBody extends ConsumerWidget {
           WakeTimeCard(
             settings: alarm.settings,
             nextWindow: alarm.nextWindow,
-            onEnabledChanged: controller.setEnabled,
+            onEnabledChanged: (enabled) async {
+              final messenger = ScaffoldMessenger.of(context);
+              final text = context.l10n.saveFailed;
+              if (await controller.setEnabled(enabled) != null) {
+                messenger.showSnackBar(SnackBar(content: Text(text)));
+              }
+            },
             onEdit: () => showModalBottomSheet<void>(
               context: context,
               isScrollControlled: true,
@@ -84,6 +91,7 @@ class _HomeBody extends ConsumerWidget {
                   if (failure == null && sheetContext.mounted) {
                     Navigator.of(sheetContext).pop();
                   }
+                  return failure == null;
                 },
               ),
             ),
@@ -112,6 +120,11 @@ class _LastNight extends ConsumerWidget {
         (sleep) => sleep.value?.nights.firstOrNull,
       ),
     );
+    final samsungReady = ref.watch(
+      sleepControllerProvider.select(
+        (sleep) => sleep.value?.samsung == SamsungStatus.ready,
+      ),
+    );
     if (night == null) return const SizedBox.shrink();
     final l10n = context.l10n;
     return Column(
@@ -120,6 +133,7 @@ class _LastNight extends ConsumerWidget {
         NightCard(
           night: night,
           now: DateTime.now(),
+          samsungReady: samsungReady,
           title: l10n.sleepLastNight,
         ),
         Align(

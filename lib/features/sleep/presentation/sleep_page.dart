@@ -63,7 +63,11 @@ class _NightList extends StatelessWidget {
             ).textTheme.bodyMedium?.copyWith(color: muted),
           );
         }
-        return NightCard(night: overview.nights[index - 1], now: now);
+        return NightCard(
+          night: overview.nights[index - 1],
+          now: now,
+          samsungReady: overview.samsung == SamsungStatus.ready,
+        );
       },
     );
   }

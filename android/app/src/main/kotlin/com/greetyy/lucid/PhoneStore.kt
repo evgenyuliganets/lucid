@@ -29,6 +29,11 @@ class PhoneStore(context: Context) {
         get() = prefs.getLong(KEY_RINGING_END, -1)
         set(value) = prefs.edit { putLong(KEY_RINGING_END, value) }
 
+    /** The notification prompt was shown at least once. */
+    var notificationsAsked: Boolean
+        get() = prefs.getBoolean(KEY_NOTIFICATIONS_ASKED, false)
+        set(value) = prefs.edit { putBoolean(KEY_NOTIFICATIONS_ASKED, value) }
+
     val watchStatus: WatchStatus?
         get() = prefs.getString(KEY_WATCH_STATUS, null)?.let(WatchStatus::decode)
 
@@ -60,6 +65,7 @@ class PhoneStore(context: Context) {
         const val KEY_WATCH_STATUS = "watchStatus"
         const val KEY_WATCH_STATUS_AT = "watchStatusAt"
         const val KEY_NIGHTS = "nights"
+        const val KEY_NOTIFICATIONS_ASKED = "notificationsAsked"
         const val MAX_NIGHTS = 30
     }
 }

@@ -14,13 +14,14 @@ class Night {
 
   DateTime get wakeDay => watch?.windowEnd ?? record!.end;
 
-  /// [now] decides whether missing Samsung data may still arrive.
-  WakeCheck check(DateTime now) {
+  /// [now] and [samsungReady] decide whether missing Samsung data may still
+  /// arrive.
+  WakeCheck check(DateTime now, {required bool samsungReady}) {
     final wokeAt = watch?.wokeAt;
     if (wokeAt == null) return WakeCheck.none;
     final record = this.record;
     if (record == null) {
-      return now.difference(wokeAt) < const Duration(hours: 12)
+      return samsungReady && now.difference(wokeAt) < const Duration(hours: 12)
           ? WakeCheck.pending
           : WakeCheck.none;
     }

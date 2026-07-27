@@ -16,11 +16,15 @@ class NightCard extends StatelessWidget {
     super.key,
     required this.night,
     required this.now,
+    required this.samsungReady,
     this.title,
   });
 
   final Night night;
   final DateTime now;
+
+  /// Whether Samsung Health is connected, so missing stages may still come.
+  final bool samsungReady;
 
   /// Shown instead of the date, e.g. "Last night".
   final String? title;
@@ -60,11 +64,12 @@ class NightCard extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               _StageLegend(record: record),
             ],
-            if (watch?.wokeAt != null) ...[
+            if (watch != null) ...[
               const SizedBox(height: AppSpacing.sm),
-              Text(_wakeText(context, watch!), style: textTheme.bodyLarge),
+              Text(_wakeText(context, watch), style: textTheme.bodyLarge),
             ],
-            if (_checkText(l10n, night.check(now)) case final check?) ...[
+            if (_checkText(l10n, night.check(now, samsungReady: samsungReady))
+                case final check?) ...[
               const SizedBox(height: AppSpacing.xs),
               Text(check, style: textTheme.bodyMedium?.copyWith(color: muted)),
             ],
@@ -79,11 +84,11 @@ class NightCard extends StatelessWidget {
 
   String _wakeText(BuildContext context, WatchNight watch) {
     final l10n = context.l10n;
-    final time = context.clock(watch.wokeAt!);
+    final wokeAt = watch.wokeAt;
+    if (wokeAt == null) return l10n.wokeAtPhone(context.clock(watch.windowEnd));
     return switch (watch.reason) {
-      WakeReason.lightSleep => l10n.wokeAtLight(time),
-      WakeReason.deadline => l10n.wokeAtDeadline(time),
-      null => l10n.wokeAtSnoozed(time),
+      WakeReason.lightSleep => l10n.wokeAtLight(context.clock(wokeAt)),
+      WakeReason.deadline || null => l10n.wokeAtDeadline(context.clock(wokeAt)),
     };
   }
 
@@ -128,7 +133,7 @@ class _StageLegend extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.xs),
               Text(
-                '$label ${record.timeIn(stage).inMinutes}′',
+                l10n.stageMinutes(label, record.timeIn(stage).inMinutes),
                 style: textTheme.bodySmall,
               ),
             ],

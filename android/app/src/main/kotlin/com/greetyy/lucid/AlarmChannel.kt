@@ -140,11 +140,15 @@ class AlarmChannel(
         val granted = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
-        if (granted) {
-            // Granted but switched off in the system settings.
+        val store = PhoneStore(activity)
+        // After two refusals Android stops showing the prompt; only Settings can fix it then.
+        val blocked = store.notificationsAsked &&
+            !activity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+        if (granted || blocked) {
             open(result, Settings.ACTION_APP_NOTIFICATION_SETTINGS)
             return
         }
+        store.notificationsAsked = true
         pendingPermission?.let { replyState(it) }
         pendingPermission = result
         activity.requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), PERMISSION_REQUEST)

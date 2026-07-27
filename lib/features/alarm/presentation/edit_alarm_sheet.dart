@@ -5,8 +5,8 @@ import 'package:lucid/design_system/app_theme.dart';
 import 'package:lucid/features/alarm/domain/alarm_settings.dart';
 import 'package:lucid/l10n/l10n.dart';
 
-/// Edits a draft of the alarm; [onSave] receives it switched on. The caller
-/// closes the sheet.
+/// Edits a draft of the alarm; [onSave] receives it switched on and returns
+/// whether it was saved. The caller closes the sheet; a failure shows here.
 class EditAlarmSheet extends StatefulWidget {
   const EditAlarmSheet({
     super.key,
@@ -15,7 +15,7 @@ class EditAlarmSheet extends StatefulWidget {
   });
 
   final AlarmSettings initial;
-  final Future<void> Function(AlarmSettings settings) onSave;
+  final Future<bool> Function(AlarmSettings settings) onSave;
 
   @override
   State<EditAlarmSheet> createState() => _EditAlarmSheetState();
@@ -24,6 +24,7 @@ class EditAlarmSheet extends StatefulWidget {
 class _EditAlarmSheetState extends State<EditAlarmSheet> {
   late AlarmSettings _draft = widget.initial;
   bool _saving = false;
+  bool _failed = false;
 
   Future<void> _pickTime() async {
     final picked = await showTimePicker(
@@ -46,9 +47,17 @@ class _EditAlarmSheetState extends State<EditAlarmSheet> {
   }
 
   Future<void> _save() async {
-    setState(() => _saving = true);
-    await widget.onSave(_draft.copyWith(enabled: true));
-    if (mounted) setState(() => _saving = false);
+    setState(() {
+      _saving = true;
+      _failed = false;
+    });
+    final saved = await widget.onSave(_draft.copyWith(enabled: true));
+    if (mounted) {
+      setState(() {
+        _saving = false;
+        _failed = !saved;
+      });
+    }
   }
 
   @override
@@ -131,6 +140,15 @@ class _EditAlarmSheetState extends State<EditAlarmSheet> {
               Text(
                 l10n.editRepeatHint,
                 style: textTheme.bodySmall?.copyWith(color: muted),
+              ),
+            ],
+            if (_failed) ...[
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                l10n.saveFailed,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
               ),
             ],
             const SizedBox(height: AppSpacing.lg),

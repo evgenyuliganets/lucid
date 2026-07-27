@@ -29,9 +29,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get alarmLatest => 'не пізніше';
-
-  @override
   String get alarmOff => 'Будильник вимкнено';
 
   @override
@@ -50,7 +47,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get alarmEdit => 'Змінити';
 
   @override
-  String get alarmEnabledLabel => 'Будильник увімкнено';
+  String get alarmEnabledLabel => 'Будильник';
 
   @override
   String get alarmHowItWorks =>
@@ -71,7 +68,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get editWindowHint =>
-      'На стільки раніше Lucid може розбудити вас у легкому сні.';
+      'Настільки раніше Lucid може розбудити вас у легкому сні.';
 
   @override
   String editWindowMinutes(int minutes) {
@@ -98,7 +95,7 @@ class AppLocalizationsUk extends AppLocalizations {
       other: 'Залишилося $count кроку',
       many: 'Залишилося $count кроків',
       few: 'Залишилося $count кроки',
-      one: 'Залишився 1 крок',
+      one: 'Залишився $count крок',
     );
     return '$_temp0';
   }
@@ -108,7 +105,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get setupIntro =>
-      'Lucid потрібні кілька дозволів на телефоні та невеликий застосунок на Galaxy Watch. Пройдіть кроки один раз.';
+      'Lucid потрібно кілька дозволів на телефоні та невеликий застосунок на Galaxy Watch. Пройдіть кроки один раз.';
 
   @override
   String get setupPhoneSection => 'На цьому телефоні';
@@ -131,9 +128,6 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get stepNotificationsBody =>
       'Будильник показується як сповіщення. Без цього телефон не задзвонить.';
-
-  @override
-  String get stepNotificationsAction => 'Дозволити';
 
   @override
   String get stepExactTitle => 'Будильники й нагадування';
@@ -211,7 +205,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get installIntro =>
-      'Потрібні комп\'ютер з Android platform tools (adb), файл lucid-watch.apk і годинник у тій самій Wi-Fi мережі, що й комп\'ютер.';
+      'Потрібні комп\'ютер з Android platform tools (adb), файл застосунку для годинника lucid-watch.apk (він іде разом із застосунком для телефона) і годинник у тій самій Wi-Fi мережі, що й комп\'ютер. adb можна завантажити з developer.android.com/tools/releases/platform-tools.';
 
   @override
   String get installStep1Title => 'Увімкніть режим розробника на годиннику';
@@ -232,13 +226,14 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get installStep3Body =>
-      'Введіть адресу й код створення пари з годинника, потім підключіться до адреси під «Бездротове налагодження» (її порт інший, ніж для пари):';
+      'Введіть адресу й код створення пари, які показує годинник, потім підключіться до адреси під «Бездротове налагодження» (її порт інший, ніж для пари). Замініть числа з прикладу на ті, що на вашому годиннику:';
 
   @override
   String get installStep4Title => 'Встановіть застосунок';
 
   @override
-  String get installStep4Body => 'У папці з lucid-watch.apk виконайте:';
+  String get installStep4Body =>
+      'Якщо телефон підключено до комп\'ютера кабелем, спершу від\'єднайте його. Потім у папці з lucid-watch.apk виконайте:';
 
   @override
   String get installStep5Title => 'Відкрийте Lucid на годиннику';
@@ -306,9 +301,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get samsungStatusUnavailable => 'Samsung Health зараз недоступний.';
 
   @override
-  String get watchCardTitle => 'Годинник';
-
-  @override
   String get watchNotPaired => 'Годинник не підключено';
 
   @override
@@ -333,7 +325,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String watchArmed(String name, String time) {
-    return '$name готовий на $time';
+    return '$name розбудить до $time';
   }
 
   @override
@@ -393,11 +385,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String wokeAtSnoozed(String time) {
-    return 'Вимкнено о $time';
-  }
-
-  @override
   String get checkLight => 'Samsung підтверджує: у цей момент був легкий сон.';
 
   @override
@@ -419,4 +406,27 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get samsungReadFailed => 'Не вдалося прочитати Samsung Health.';
+
+  @override
+  String get saveFailed =>
+      'Lucid не зміг зберегти будильник. Спробуйте ще раз.';
+
+  @override
+  String get wearAppMissing =>
+      'Galaxy Wearable не встановлено. Завантажте його з Galaxy Store або Play Маркету.';
+
+  @override
+  String wokeAtPhone(String time) {
+    return 'Годинник не задзвонив; телефон задзвонив о $time';
+  }
+
+  @override
+  String stageMinutes(String stage, int minutes) {
+    return '$stage $minutes хв';
+  }
+
+  @override
+  String hypnogramLabel(String start, String end) {
+    return 'Фази сну з $start до $end';
+  }
 }

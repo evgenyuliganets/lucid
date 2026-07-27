@@ -29,9 +29,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get alarmLatest => 'at the latest';
-
-  @override
   String get alarmOff => 'Alarm is off';
 
   @override
@@ -50,7 +47,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alarmEdit => 'Change';
 
   @override
-  String get alarmEnabledLabel => 'Alarm on';
+  String get alarmEnabledLabel => 'Alarm';
 
   @override
   String get alarmHowItWorks =>
@@ -131,9 +128,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'The alarm appears as a notification. Without it the phone cannot ring.';
 
   @override
-  String get stepNotificationsAction => 'Allow';
-
-  @override
   String get stepExactTitle => 'Alarms & reminders';
 
   @override
@@ -209,7 +203,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get installIntro =>
-      'You need a computer with Android platform tools (adb), the file lucid-watch.apk, and the watch on the same Wi-Fi as the computer.';
+      'You need a computer with Android platform tools (adb), the watch app file lucid-watch.apk (it comes together with the phone app), and the watch on the same Wi-Fi as the computer. Get adb from developer.android.com/tools/releases/platform-tools.';
 
   @override
   String get installStep1Title => 'Turn on developer mode on the watch';
@@ -230,13 +224,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get installStep3Body =>
-      'Type the pairing address and code from the watch, then connect to the address shown under “Wireless debugging” (its port differs from the pairing port):';
+      'Type the pairing address and code that the watch shows, then connect to the address shown under “Wireless debugging” (its port differs from the pairing port). Replace the example numbers with the ones on your watch:';
 
   @override
   String get installStep4Title => 'Install the watch app';
 
   @override
-  String get installStep4Body => 'In the folder with lucid-watch.apk run:';
+  String get installStep4Body =>
+      'If your phone is connected to the computer by USB, unplug it first. Then, in the folder with lucid-watch.apk, run:';
 
   @override
   String get installStep5Title => 'Open Lucid on the watch';
@@ -302,9 +297,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get samsungStatusUnavailable =>
       'Samsung Health is not reachable right now.';
-
-  @override
-  String get watchCardTitle => 'Watch';
 
   @override
   String get watchNotPaired => 'No watch connected';
@@ -390,11 +382,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String wokeAtSnoozed(String time) {
-    return 'Dismissed at $time';
-  }
-
-  @override
   String get checkLight => 'Samsung agrees: light sleep at that moment.';
 
   @override
@@ -416,4 +403,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get samsungReadFailed => 'Samsung Health could not be read.';
+
+  @override
+  String get saveFailed => 'Lucid could not save the alarm. Try again.';
+
+  @override
+  String get wearAppMissing =>
+      'Galaxy Wearable is not installed. Get it from Galaxy Store or Play Store.';
+
+  @override
+  String wokeAtPhone(String time) {
+    return 'The watch did not ring; the phone rang at $time';
+  }
+
+  @override
+  String stageMinutes(String stage, int minutes) {
+    return '$stage $minutes min';
+  }
+
+  @override
+  String hypnogramLabel(String start, String end) {
+    return 'Sleep stages from $start to $end';
+  }
 }

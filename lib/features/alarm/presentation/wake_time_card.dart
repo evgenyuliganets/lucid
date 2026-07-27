@@ -100,8 +100,9 @@ class WakeTimeCard extends StatelessWidget {
   String _nextText(BuildContext context, DateTime end) {
     final l10n = context.l10n;
     final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final day = DateTime(end.year, end.month, end.day);
+    // Calendar days in UTC, so a daylight-saving night still counts as one day.
+    final today = DateTime.utc(now.year, now.month, now.day);
+    final day = DateTime.utc(end.year, end.month, end.day);
     final label = switch (day.difference(today).inDays) {
       0 => l10n.alarmNextToday,
       1 => l10n.alarmNextTomorrow,

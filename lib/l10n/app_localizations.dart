@@ -134,12 +134,6 @@ abstract class AppLocalizations {
   /// **'Wake between {start} and {end}'**
   String alarmWakeBetween(String start, String end);
 
-  /// No description provided for @alarmLatest.
-  ///
-  /// In en, this message translates to:
-  /// **'at the latest'**
-  String get alarmLatest;
-
   /// No description provided for @alarmOff.
   ///
   /// In en, this message translates to:
@@ -179,7 +173,7 @@ abstract class AppLocalizations {
   /// No description provided for @alarmEnabledLabel.
   ///
   /// In en, this message translates to:
-  /// **'Alarm on'**
+  /// **'Alarm'**
   String get alarmEnabledLabel;
 
   /// No description provided for @alarmHowItWorks.
@@ -307,12 +301,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The alarm appears as a notification. Without it the phone cannot ring.'**
   String get stepNotificationsBody;
-
-  /// No description provided for @stepNotificationsAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow'**
-  String get stepNotificationsAction;
 
   /// No description provided for @stepExactTitle.
   ///
@@ -449,7 +437,7 @@ abstract class AppLocalizations {
   /// No description provided for @installIntro.
   ///
   /// In en, this message translates to:
-  /// **'You need a computer with Android platform tools (adb), the file lucid-watch.apk, and the watch on the same Wi-Fi as the computer.'**
+  /// **'You need a computer with Android platform tools (adb), the watch app file lucid-watch.apk (it comes together with the phone app), and the watch on the same Wi-Fi as the computer. Get adb from developer.android.com/tools/releases/platform-tools.'**
   String get installIntro;
 
   /// No description provided for @installStep1Title.
@@ -485,7 +473,7 @@ abstract class AppLocalizations {
   /// No description provided for @installStep3Body.
   ///
   /// In en, this message translates to:
-  /// **'Type the pairing address and code from the watch, then connect to the address shown under “Wireless debugging” (its port differs from the pairing port):'**
+  /// **'Type the pairing address and code that the watch shows, then connect to the address shown under “Wireless debugging” (its port differs from the pairing port). Replace the example numbers with the ones on your watch:'**
   String get installStep3Body;
 
   /// No description provided for @installStep4Title.
@@ -497,7 +485,7 @@ abstract class AppLocalizations {
   /// No description provided for @installStep4Body.
   ///
   /// In en, this message translates to:
-  /// **'In the folder with lucid-watch.apk run:'**
+  /// **'If your phone is connected to the computer by USB, unplug it first. Then, in the folder with lucid-watch.apk, run:'**
   String get installStep4Body;
 
   /// No description provided for @installStep5Title.
@@ -607,12 +595,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Samsung Health is not reachable right now.'**
   String get samsungStatusUnavailable;
-
-  /// No description provided for @watchCardTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Watch'**
-  String get watchCardTitle;
 
   /// No description provided for @watchNotPaired.
   ///
@@ -746,12 +728,6 @@ abstract class AppLocalizations {
   /// **'No light moment came; Lucid woke you at {time}'**
   String wokeAtDeadline(String time);
 
-  /// No description provided for @wokeAtSnoozed.
-  ///
-  /// In en, this message translates to:
-  /// **'Dismissed at {time}'**
-  String wokeAtSnoozed(String time);
-
   /// No description provided for @checkLight.
   ///
   /// In en, this message translates to:
@@ -793,6 +769,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Samsung Health could not be read.'**
   String get samsungReadFailed;
+
+  /// No description provided for @saveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Lucid could not save the alarm. Try again.'**
+  String get saveFailed;
+
+  /// No description provided for @wearAppMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Galaxy Wearable is not installed. Get it from Galaxy Store or Play Store.'**
+  String get wearAppMissing;
+
+  /// No description provided for @wokeAtPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch did not ring; the phone rang at {time}'**
+  String wokeAtPhone(String time);
+
+  /// No description provided for @stageMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{stage} {minutes} min'**
+  String stageMinutes(String stage, int minutes);
+
+  /// No description provided for @hypnogramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep stages from {start} to {end}'**
+  String hypnogramLabel(String start, String end);
 }
 
 class _AppLocalizationsDelegate

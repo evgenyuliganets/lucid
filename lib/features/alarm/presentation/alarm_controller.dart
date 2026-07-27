@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucid/core/result/result.dart';
 import 'package:lucid/features/alarm/alarm_providers.dart';
+import 'package:lucid/features/alarm/data/alarm_repository.dart';
 import 'package:lucid/features/alarm/domain/alarm_overview.dart';
 import 'package:lucid/features/alarm/domain/alarm_settings.dart';
 
@@ -15,6 +16,8 @@ final alarmControllerProvider =
 /// change from the watch. A reload keeps the shown data until the new one
 /// arrives.
 class AlarmController extends AsyncNotifier<AlarmOverview> {
+  AlarmRepository get _repository => ref.read(alarmRepositoryProvider);
+
   @override
   Future<AlarmOverview> build() async {
     final channel = ref.watch(alarmChannelProvider);
@@ -28,7 +31,7 @@ class AlarmController extends AsyncNotifier<AlarmOverview> {
   }
 
   Future<void> refresh() async {
-    final result = await ref.read(alarmRepositoryProvider).load();
+    final result = await _repository.load();
     if (!ref.mounted) return;
     state = switch (result) {
       Success(:final value) => AsyncData(value),
@@ -39,7 +42,7 @@ class AlarmController extends AsyncNotifier<AlarmOverview> {
   /// Saves, re-arms both devices and returns the failure, if any; on failure
   /// the shown alarm stays as it was.
   Future<AppFailure?> save(AlarmSettings settings) async {
-    final result = await ref.read(alarmRepositoryProvider).save(settings);
+    final result = await _repository.save(settings);
     if (!ref.mounted) return null;
     switch (result) {
       case Success(:final value):
@@ -50,39 +53,33 @@ class AlarmController extends AsyncNotifier<AlarmOverview> {
     }
   }
 
-  Future<void> setEnabled(bool enabled) async {
+  Future<AppFailure?> setEnabled(bool enabled) async {
     final current = state.value?.settings;
-    if (current == null || current.enabled == enabled) return;
-    await save(current.copyWith(enabled: enabled));
+    if (current == null || current.enabled == enabled) return null;
+    return save(current.copyWith(enabled: enabled));
   }
 
   Future<void> requestNotifications() async {
-    final overview = await _run(
-      ref.read(alarmChannelProvider).requestNotifications,
-    );
-    if (overview != null && ref.mounted) state = AsyncData(overview);
-  }
-
-  Future<void> openExactAlarmSettings() =>
-      _run(ref.read(alarmChannelProvider).openExactAlarmSettings);
-
-  Future<void> openFullScreenSettings() =>
-      _run(ref.read(alarmChannelProvider).openFullScreenSettings);
-
-  Future<void> requestBatteryUnrestricted() =>
-      _run(ref.read(alarmChannelProvider).requestBatteryUnrestricted);
-
-  Future<void> openWearApp() =>
-      _run(ref.read(alarmChannelProvider).openWearApp);
-
-  Future<void> testAlarm() => _run(ref.read(alarmChannelProvider).testAlarm);
-
-  /// Settings screens are best effort: a failure to open one leaves state as is.
-  Future<T?> _run<T>(Future<T> Function() action) async {
-    try {
-      return await action();
-    } on AppFailure {
-      return null;
+    final result = await _repository.requestNotifications();
+    if (!ref.mounted) return;
+    if (result case Success(value: final overview?)) {
+      state = AsyncData(overview);
     }
   }
+
+  // Settings screens are best effort; the state reloads when the app resumes.
+  Future<void> openExactAlarmSettings() => _repository.openExactAlarmSettings();
+
+  Future<void> openFullScreenSettings() => _repository.openFullScreenSettings();
+
+  Future<void> requestBatteryUnrestricted() =>
+      _repository.requestBatteryUnrestricted();
+
+  Future<void> testAlarm() => _repository.testAlarm();
+
+  /// False when Galaxy Wearable is missing, so the UI can say where to get it.
+  Future<bool> openWearApp() async => switch (await _repository.openWearApp()) {
+    Success(:final value) => value,
+    FailureResult() => false,
+  };
 }

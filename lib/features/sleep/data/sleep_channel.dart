@@ -16,18 +16,20 @@ class SleepChannel {
   final MethodChannel _channel;
 
   Future<SamsungStatus> samsungStatus() async =>
-      SamsungStatus.parse(await _call('status') as String?);
+      SamsungStatus.parse(_string(await _call('status')));
 
   /// Asks Samsung Health for sleep access (its own permission screen).
   Future<SamsungStatus> connectSamsung() async =>
-      SamsungStatus.parse(await _call('connect') as String?);
+      SamsungStatus.parse(_string(await _call('connect')));
 
   Future<List<SleepRecord>> readSamsung(DateTime from, DateTime to) async {
     final reply = await _call('readSleep', {
       'from': from.millisecondsSinceEpoch,
       'to': to.millisecondsSinceEpoch,
     });
-    return _parse(reply, (item) {
+    final records = _parse(reply, (item) {
+      // A night Samsung has not closed yet has no end; it is skipped.
+      if (item['end'] == null) return null;
       final sessions = (item['sessions'] as List).cast<Map>();
       return SleepRecord(
         start: _time(item['start']),
@@ -44,6 +46,7 @@ class SleepChannel {
         ]..sort((a, b) => a.start.compareTo(b.start)),
       );
     });
+    return records.nonNulls.toList();
   }
 
   Future<List<WatchNight>> watchNights() async {
@@ -80,6 +83,11 @@ class SleepChannel {
     } on Object catch (error) {
       throw AppFailure('lucid/sleep reply is malformed', cause: error);
     }
+  }
+
+  String? _string(Object? reply) {
+    if (reply is String?) return reply;
+    throw AppFailure('lucid/sleep reply is malformed', cause: reply);
   }
 
   static DateTime _time(Object? millis) =>

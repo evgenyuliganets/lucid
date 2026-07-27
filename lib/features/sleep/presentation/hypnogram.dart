@@ -31,10 +31,13 @@ class Hypnogram extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final from = [record.start, ?windowStart].reduce(_earlier);
     final to = [record.end, ?wokeAt, ?windowEnd].reduce(_later);
-    final l10n = context.l10n;
+    // The legend next to it reads the minutes per stage; this names the span.
     return Semantics(
-      label:
-          '${l10n.stageAwake}, ${l10n.stageRem}, ${l10n.stageLight}, ${l10n.stageDeep}',
+      label: context.l10n.hypnogramLabel(
+        context.clock(from),
+        context.clock(to),
+      ),
+      excludeSemantics: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
