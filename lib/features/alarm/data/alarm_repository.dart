@@ -30,6 +30,9 @@ class AlarmRepository {
   /// False when Galaxy Wearable is not installed.
   Future<Result<bool>> openWearApp() => _guard(_channel.openWearApp);
 
+  /// False when no watch took the request.
+  Future<Result<bool>> installOnWatch() => _guard(_channel.installOnWatch);
+
   Future<Result<void>> testAlarm() => _guard(_channel.testAlarm);
 
   Future<Result<T>> _guard<T>(Future<T> Function() action) async {

@@ -383,14 +383,26 @@ abstract class AppLocalizations {
   /// No description provided for @stepWatchInstallBody.
   ///
   /// In en, this message translates to:
-  /// **'Lucid is not in the watch\'s app store yet, so it is installed from a computer once. This takes about five minutes.'**
+  /// **'Lucid comes from Google Play on the watch too. Tap the button: the Play Store opens on your watch, then tap Install there.'**
   String get stepWatchInstallBody;
 
   /// No description provided for @stepWatchInstallShow.
   ///
   /// In en, this message translates to:
-  /// **'Show how'**
+  /// **'Open on the watch'**
   String get stepWatchInstallShow;
+
+  /// No description provided for @stepWatchInstallComputer.
+  ///
+  /// In en, this message translates to:
+  /// **'Install with a computer instead'**
+  String get stepWatchInstallComputer;
+
+  /// No description provided for @watchInstallFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch did not answer. On the watch, open Play Store → Apps on your phone → Lucid → Install.'**
+  String get watchInstallFailed;
 
   /// No description provided for @stepWatchFinishTitle.
   ///

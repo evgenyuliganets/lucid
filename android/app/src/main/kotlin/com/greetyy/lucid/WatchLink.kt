@@ -1,6 +1,11 @@
 package com.greetyy.lucid
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.wear.remote.interactions.RemoteActivityHelper
+import androidx.concurrent.futures.await
+import java.util.concurrent.Executors
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataEventBuffer
@@ -39,6 +44,21 @@ object WatchLink {
             installed = installedNodes.isNotEmpty(),
             name = watch?.displayName,
         )
+    }
+
+    /**
+     * Opens Lucid's Play Store page on every connected watch, where the user
+     * taps Install. True when at least one watch accepted the request.
+     */
+    suspend fun openPlayStoreOnWatch(context: Context): Boolean {
+        val nodes = runCatching { Wearable.getNodeClient(context).connectedNodes.await() }.getOrDefault(emptyList())
+        val intent = Intent(Intent.ACTION_VIEW)
+            .addCategory(Intent.CATEGORY_BROWSABLE)
+            .setData(Uri.parse("market://details?id=${context.packageName}"))
+        val helper = RemoteActivityHelper(context, Executors.newSingleThreadExecutor())
+        return nodes.map { node ->
+            runCatching { helper.startRemoteActivity(intent, node.id).await() }.isSuccess
+        }.any { it }
     }
 
     private fun put(context: Context, path: String, value: String) {

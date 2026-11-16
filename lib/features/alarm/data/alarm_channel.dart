@@ -58,6 +58,10 @@ class AlarmChannel {
 
   Future<bool> openWearApp() async => await _call('openWearApp') == true;
 
+  /// Opens Lucid's Play Store page on the connected watch; false when no
+  /// watch took the request.
+  Future<bool> installOnWatch() async => await _call('installOnWatch') == true;
+
   Future<void> testAlarm() => _call('testAlarm');
 
   Future<Object?> _call(String method, [Object? arguments]) async {

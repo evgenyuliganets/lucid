@@ -176,10 +176,17 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get stepWatchInstallBody =>
-      'Lucid ще немає в магазині застосунків годинника, тому його один раз встановлюють із комп\'ютера. Це займе близько п\'яти хвилин.';
+      'На годинник Lucid теж ставиться з Google Play. Натисніть кнопку: на годиннику відкриється Play Store, там торкніться «Встановити».';
 
   @override
-  String get stepWatchInstallShow => 'Показати як';
+  String get stepWatchInstallShow => 'Відкрити на годиннику';
+
+  @override
+  String get stepWatchInstallComputer => 'Встановити з комп’ютера';
+
+  @override
+  String get watchInstallFailed =>
+      'Годинник не відповів. На годиннику відкрийте Play Store → Застосунки на телефоні → Lucid → Встановити.';
 
   @override
   String get stepWatchFinishTitle => 'Завершіть на годиннику';

@@ -117,7 +117,15 @@ class _SetupList extends ConsumerWidget {
             body: l10n.stepWatchInstallBody,
             done: done(SetupStep.watchApp),
             actionLabel: l10n.stepWatchInstallShow,
-            onAction: () => Navigator.of(context).push(
+            onAction: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              final failed = l10n.watchInstallFailed;
+              if (!await controller.installOnWatch()) {
+                messenger.showSnackBar(SnackBar(content: Text(failed)));
+              }
+            },
+            secondaryLabel: l10n.stepWatchInstallComputer,
+            onSecondary: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const WatchInstallPage()),
             ),
           ),

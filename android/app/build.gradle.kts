@@ -57,6 +57,8 @@ dependencies {
     implementation(project(":shared"))
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("com.google.android.gms:play-services-wearable:19.0.0")
+    implementation("androidx.wear:wear-remote-interactions:1.1.0")
+    implementation("androidx.concurrent:concurrent-futures-ktx:1.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
 }

@@ -6,8 +6,9 @@ import 'package:lucid/l10n/l10n.dart';
 /// One setup step: a done mark or the step number, a title, why it is
 /// needed and, while open, the action that fixes it.
 ///
-/// [onAction] null hides the button; [note] is an extra line shown while the
-/// step is open (for example what the app is waiting for).
+/// [onAction] null hides the button; [onSecondary] adds a text button for an
+/// alternative way; [note] is an extra line shown while the step is open (for
+/// example what the app is waiting for).
 class SetupStepCard extends StatelessWidget {
   const SetupStepCard({
     super.key,
@@ -18,6 +19,8 @@ class SetupStepCard extends StatelessWidget {
     this.actionLabel,
     this.onAction,
     this.note,
+    this.secondaryLabel,
+    this.onSecondary,
   });
 
   final int number;
@@ -27,6 +30,8 @@ class SetupStepCard extends StatelessWidget {
   final String? actionLabel;
   final VoidCallback? onAction;
   final String? note;
+  final String? secondaryLabel;
+  final VoidCallback? onSecondary;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +39,7 @@ class SetupStepCard extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final note = this.note;
     final actionLabel = this.actionLabel;
+    final secondaryLabel = this.secondaryLabel;
     return Card.outlined(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -70,6 +76,11 @@ class SetupStepCard extends StatelessWidget {
                       child: Text(actionLabel),
                     ),
                   ],
+                  if (!done && secondaryLabel != null && onSecondary != null)
+                    TextButton(
+                      onPressed: onSecondary,
+                      child: Text(secondaryLabel),
+                    ),
                 ],
               ),
             ),

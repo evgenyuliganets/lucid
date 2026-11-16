@@ -82,4 +82,11 @@ class AlarmController extends AsyncNotifier<AlarmOverview> {
     Success(:final value) => value,
     FailureResult() => false,
   };
+
+  /// Opens the Play Store on the watch; false when the watch did not answer.
+  Future<bool> installOnWatch() async =>
+      switch (await _repository.installOnWatch()) {
+        Success(:final value) => value,
+        FailureResult() => false,
+      };
 }

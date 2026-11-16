@@ -174,10 +174,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepWatchInstallBody =>
-      'Lucid is not in the watch\'s app store yet, so it is installed from a computer once. This takes about five minutes.';
+      'Lucid comes from Google Play on the watch too. Tap the button: the Play Store opens on your watch, then tap Install there.';
 
   @override
-  String get stepWatchInstallShow => 'Show how';
+  String get stepWatchInstallShow => 'Open on the watch';
+
+  @override
+  String get stepWatchInstallComputer => 'Install with a computer instead';
+
+  @override
+  String get watchInstallFailed =>
+      'The watch did not answer. On the watch, open Play Store → Apps on your phone → Lucid → Install.';
 
   @override
   String get stepWatchFinishTitle => 'Finish on the watch';

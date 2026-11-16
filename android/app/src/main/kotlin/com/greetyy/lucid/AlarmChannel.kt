@@ -62,6 +62,7 @@ class AlarmChannel(
             "openFullScreenSettings" -> open(result, Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
             "requestBatteryUnrestricted" -> open(result, Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
             "openWearApp" -> openWearApp(result)
+            "installOnWatch" -> scope.launch { result.success(WatchLink.openPlayStoreOnWatch(activity)) }
             "testAlarm" -> {
                 PhoneAlarm.ring(activity, windowEnd = 0)
                 result.success(null)
