@@ -40,23 +40,28 @@ heart rate.
 
    Output: `build/wear/outputs/apk/release/wear-release.apk`.
 
-Both release builds are signed with the debug key for now; the phone and the
-watch app must be signed with the same key or they cannot talk to each other.
+## Release
+
+Both apps ship in one Play listing (`com.greetyy.lucid`): the phone bundle on
+the normal tracks, the watch bundle on the "Wear OS only" tracks. Version codes
+must be unique across both: the phone uses `pubspec.yaml` (1, 2, ...), the
+watch `100_000 + n` in `android/wear/build.gradle.kts`.
+
+Release builds are signed with the upload key from `android/key.properties`
+(git-ignored; it points to a keystore outside the repo). Play re-signs both
+apps with the same app signing key, so they can talk to each other.
+
+```sh
+flutter build appbundle --release
+cd android && ./gradlew :wear:bundleRelease
+```
 
 ## Install
 
-- Phone: `adb install -r app-release.apk`, or copy the APK to the phone and
-  open it.
-- Watch: the phone app's Setup screen walks through it (developer mode on the
-  watch, wireless debugging, `adb pair`, `adb connect`,
-  `adb install -r lucid-watch.apk`).
-
-Then open Lucid on the phone and follow Setup until every step is green, and
-open Lucid on the watch once to allow notifications and the alarm screen.
-
-Samsung Health sleep stages (optional): Samsung Health → Settings → About
-Samsung Health → tap the version 10 times → Developer mode → "Developer Mode
-for Data Read", then Setup → Samsung Health → Connect.
+Testers join the internal test in a browser, install Lucid from Play on the
+phone, then use Setup → "Open on the watch" to install it on the watch.
+Sideloading (`adb install`) works too, but then both apps must come from the
+same local build, not mixed with Play.
 
 ## Checks
 

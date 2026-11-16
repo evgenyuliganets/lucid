@@ -1,9 +1,19 @@
+import java.util.Properties
+
 // Lucid for Galaxy Watch (Wear OS). Same applicationId and signing key as the
 // phone app, so the Wear Data Layer connects them.
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+}
+
+// The upload key lives outside the repo; android/key.properties (git-ignored)
+// points to it. Both apps must use the same key or the Wear Data Layer does not
+// connect them. Without the file, release builds fall back to the debug key.
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("key.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 android {
@@ -14,16 +24,27 @@ android {
         applicationId = "com.greetyy.lucid"
         minSdk = 33
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        // Play needs version codes unique across the phone and watch bundles.
+        versionCode = 100_002
+        versionName = "1.0.1"
+    }
+
+    signingConfigs {
+        if (!keystoreProperties.isEmpty) {
+            create("release") {
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Same key as the phone app's release build (the Flutter template signs
-            // release with the debug key for now); the Data Layer needs matching keys.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig =
+                signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
 

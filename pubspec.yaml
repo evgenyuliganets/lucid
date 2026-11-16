@@ -1,7 +1,7 @@
 name: lucid
 description: Lucid, a smart sleep alarm that wakes you at a lighter-sleep moment inside a time window.
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.12.2
