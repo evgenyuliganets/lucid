@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lucid/core/formatting/time_format.dart';
 import 'package:lucid/design_system/app_spacing.dart';
 import 'package:lucid/design_system/app_theme.dart';
@@ -104,7 +105,7 @@ class _EditAlarmSheetState extends State<EditAlarmSheet> {
               children: [
                 for (final minutes in AlarmSettings.windowChoices)
                   ChoiceChip(
-                    label: Text(l10n.editWindowMinutes(minutes)),
+                    label: Text(_windowLabel(context, minutes)),
                     selected: _draft.windowMinutes == minutes,
                     onSelected: (_) => setState(
                       () => _draft = _draft.copyWith(windowMinutes: minutes),
@@ -164,4 +165,14 @@ class _EditAlarmSheetState extends State<EditAlarmSheet> {
       ),
     );
   }
+}
+
+/// "45 min" below an hour, "1.5 h" / "1,5 год" from an hour up.
+String _windowLabel(BuildContext context, int minutes) {
+  final l10n = context.l10n;
+  if (minutes < 60) return l10n.editWindowMinutes(minutes);
+  final hours = NumberFormat.decimalPattern(
+    Localizations.localeOf(context).toLanguageTag(),
+  ).format(minutes / 60);
+  return l10n.editWindowHours(hours);
 }

@@ -54,6 +54,17 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('the editor offers windows up to two hours', (tester) async {
+    fakeChannels(alarmStateReply());
+    await pumpApp(tester);
+    await tester.tap(find.text('Change'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('1.5 h'), findsOneWidget);
+    expect(find.text('2 h'), findsOneWidget);
+    expect(find.text('45 min'), findsOneWidget);
+  });
+
   test('saving sends exactly the four settings keys', () async {
     final calls = fakeChannels(alarmStateReply());
     await AlarmChannel().saveSettings(

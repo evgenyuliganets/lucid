@@ -80,5 +80,7 @@ class AlarmSettingsTest {
         assertNull(AlarmSettings.decode("1;2000;30;3"))
         assertNull(AlarmSettings.decode("1;420;30;999"))
         assertNull(AlarmSettings.decode("x;420;30;3"))
+        assertNull(AlarmSettings.decode("1;420;121;3"))
+        assertEquals(120, AlarmSettings.decode("1;420;120;3")?.windowMinutes)
     }
 }

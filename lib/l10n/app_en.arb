@@ -30,6 +30,14 @@
   "editWindow": "Smart window",
   "editWindowHint": "Lucid may wake you this much earlier, at a light-sleep moment.",
   "editWindowMinutes": "{minutes} min",
+  "editWindowHours": "{hours} h",
+  "@editWindowHours": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
   "@editWindowMinutes": {
     "placeholders": {
       "minutes": {

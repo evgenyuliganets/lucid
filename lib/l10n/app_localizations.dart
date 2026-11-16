@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'{minutes} min'**
   String editWindowMinutes(int minutes);
 
+  /// No description provided for @editWindowHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String editWindowHours(String hours);
+
   /// No description provided for @editRepeat.
   ///
   /// In en, this message translates to:

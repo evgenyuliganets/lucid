@@ -20,6 +20,7 @@
   "editWindow": "Розумне вікно",
   "editWindowHint": "Настільки раніше Lucid може розбудити вас у легкому сні.",
   "editWindowMinutes": "{minutes} хв",
+  "editWindowHours": "{hours} год",
   "editRepeat": "Повтор",
   "editRepeatHint": "Без днів — задзвонить один раз.",
   "editSave": "Зберегти",

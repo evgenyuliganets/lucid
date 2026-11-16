@@ -59,7 +59,7 @@ data class AlarmSettings(
 
     companion object {
         const val MINUTES_PER_DAY = 24 * 60
-        const val MAX_WINDOW_MINUTES = 90
+        const val MAX_WINDOW_MINUTES = 120
 
         val DEFAULT = AlarmSettings(
             enabled = false,

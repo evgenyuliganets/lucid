@@ -76,6 +76,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String editWindowHours(String hours) {
+    return '$hours h';
+  }
+
+  @override
   String get editRepeat => 'Repeat';
 
   @override

@@ -11,9 +11,9 @@ class AlarmSettings {
     required this.days,
   });
 
-  static const windowChoices = [10, 20, 30, 45, 60];
+  static const windowChoices = [10, 20, 30, 45, 60, 90, 120];
   static const minutesPerDay = 24 * 60;
-  static const maxWindowMinutes = 90;
+  static const maxWindowMinutes = 120;
 
   final bool enabled;
   final int wakeByMinute;
