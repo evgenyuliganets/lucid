@@ -148,6 +148,13 @@ class _SetupList extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           _SamsungStep(status: samsung, done: done(SetupStep.samsung)),
+          const SizedBox(height: AppSpacing.lg),
+          Center(
+            child: TextButton(
+              onPressed: controller.openPrivacyPolicy,
+              child: Text(l10n.privacyPolicy),
+            ),
+          ),
         ],
       ),
     );

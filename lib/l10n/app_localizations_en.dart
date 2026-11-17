@@ -120,6 +120,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupOptionalSection => 'Recommended';
 
   @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
   String get setupDone => 'Done';
 
   @override

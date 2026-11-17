@@ -65,6 +65,23 @@ void main() {
     expect(find.text('45 min'), findsOneWidget);
   });
 
+  testWidgets('setup links the privacy policy', (tester) async {
+    final calls = fakeChannels(alarmStateReply());
+    await pumpApp(tester);
+    await tester.tap(find.byTooltip('Setup'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Privacy policy'),
+      300,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.ensureVisible(find.text('Privacy policy'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Privacy policy'));
+
+    expect(calls.map((call) => call.method), contains('openPrivacyPolicy'));
+  });
+
   test('saving sends exactly the four settings keys', () async {
     final calls = fakeChannels(alarmStateReply());
     await AlarmChannel().saveSettings(

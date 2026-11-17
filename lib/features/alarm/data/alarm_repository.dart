@@ -27,6 +27,9 @@ class AlarmRepository {
   Future<Result<void>> requestBatteryUnrestricted() =>
       _guard(_channel.requestBatteryUnrestricted);
 
+  Future<Result<void>> openPrivacyPolicy() =>
+      _guard(_channel.openPrivacyPolicy);
+
   /// False when Galaxy Wearable is not installed.
   Future<Result<bool>> openWearApp() => _guard(_channel.openWearApp);
 

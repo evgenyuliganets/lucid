@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'Recommended'**
   String get setupOptionalSection;
 
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
+
   /// No description provided for @setupDone.
   ///
   /// In en, this message translates to:

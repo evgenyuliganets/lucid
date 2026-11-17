@@ -77,6 +77,8 @@ class AlarmController extends AsyncNotifier<AlarmOverview> {
 
   Future<void> testAlarm() => _repository.testAlarm();
 
+  Future<void> openPrivacyPolicy() => _repository.openPrivacyPolicy();
+
   /// False when Galaxy Wearable is missing, so the UI can say where to get it.
   Future<bool> openWearApp() async => switch (await _repository.openWearApp()) {
     Success(:final value) => value,

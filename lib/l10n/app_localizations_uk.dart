@@ -122,6 +122,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get setupOptionalSection => 'Рекомендовано';
 
   @override
+  String get privacyPolicy => 'Політика конфіденційності';
+
+  @override
   String get setupDone => 'Готово';
 
   @override

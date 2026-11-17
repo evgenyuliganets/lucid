@@ -62,6 +62,10 @@ class AlarmChannel(
             "openFullScreenSettings" -> open(result, Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
             "requestBatteryUnrestricted" -> open(result, Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
             "openWearApp" -> openWearApp(result)
+            "openPrivacyPolicy" -> {
+                runCatching { activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY_URL))) }
+                result.success(null)
+            }
             "installOnWatch" -> scope.launch { result.success(WatchLink.openPlayStoreOnWatch(activity)) }
             "testAlarm" -> {
                 PhoneAlarm.ring(activity, windowEnd = 0)
@@ -196,6 +200,7 @@ class AlarmChannel(
     companion object {
         const val NAME = "lucid/alarm"
         const val PERMISSION_REQUEST = 41
+        private const val PRIVACY_POLICY_URL = "https://github.com/evgenyuliganets/lucid/blob/main/PRIVACY.md"
         private val WEAR_COMPANION_PACKAGES = listOf(
             "com.samsung.android.app.watchmanager",
             "com.google.android.wearable.app",
