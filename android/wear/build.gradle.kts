@@ -25,8 +25,8 @@ android {
         minSdk = 33
         targetSdk = 36
         // Play needs version codes unique across the phone and watch bundles.
-        versionCode = 100_002
-        versionName = "1.0.1"
+        versionCode = 100_003
+        versionName = "1.0.2"
     }
 
     signingConfigs {
