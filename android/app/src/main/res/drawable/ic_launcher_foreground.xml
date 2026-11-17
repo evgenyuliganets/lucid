@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher mark: a crescent moon over a sleep wave that ends in the wake
+     moment. Same file in android/wear; tool/render_store_assets_test.dart
+     draws the same shapes for the Play Store icon. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Circle (52,46) r20 minus circle (60,40) r17. -->
+    <path
+        android:fillColor="#FFFFF2D6"
+        android:pathData="M50.25,26.08 A20,20 0 1,0 70.63,53.26 A17,17 0 1,1 50.25,26.08 Z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M33,77 C38,71 43,71 47.5,76 C52,81 57,81 61.5,76 C64.5,72.5 67,71.5 69.5,71.5"
+        android:strokeColor="#FFB9B2FF"
+        android:strokeLineCap="round"
+        android:strokeWidth="3.2" />
+    <path
+        android:fillColor="#FFFFC56B"
+        android:pathData="M69.5,71.5 m-3.8,0 a3.8,3.8 0 1,0 7.6,0 a3.8,3.8 0 1,0 -7.6,0" />
+</vector>
