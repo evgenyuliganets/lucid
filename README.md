@@ -56,6 +56,17 @@ flutter build appbundle --release
 cd android && ./gradlew :wear:bundleRelease
 ```
 
+Store graphics (Play icon, feature graphic, phone screenshots in English and
+Ukrainian) are rendered from the real screens into `build/store/`:
+
+```sh
+flutter test tool/render_store_assets_test.dart
+```
+
+The launcher icon is the vector adaptive icon in `res/drawable` and
+`res/mipmap-anydpi-v26` (the same files in `android/app` and `android/wear`).
+The privacy policy is [PRIVACY.md](PRIVACY.md), linked from Setup.
+
 ## Install
 
 Testers join the internal test in a browser, install Lucid from Play on the
